@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // Routing
-import { useNavigate, Link } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 
 // Icons
 import { Menu, X, ShoppingCart } from "lucide-react";
@@ -24,15 +24,9 @@ const navLinks = [
 ];
 
 const Navbar = () => {
-	const navigate = useNavigate();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-	const { user, logout } = useAuthStore((state) => state);
-
-	const handleLogout = () => {
-		logout();
-		navigate({ to: "/login" });
-	};
+	const { user } = useAuthStore((state) => state);
 
 	return (
 		<>

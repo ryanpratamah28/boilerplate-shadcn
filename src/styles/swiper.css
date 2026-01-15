@@ -1,0 +1,19 @@
+/* Swiper */
+.swiper-pagination {
+	position: relative !important;
+}
+
+.swiper-pagination-bullet {
+	width: 8px;
+	height: 8px;
+	margin: 3px;
+	background-color: var(--color-primary) !important;
+	opacity: 1 !important;
+	transition: all 0.2s ease-in-out !important;
+}
+
+.swiper-pagination-bullet-active {
+	background-color: #0d1e2e !important;
+	width: 10px;
+	height: 10px;
+}

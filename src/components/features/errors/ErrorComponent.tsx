@@ -16,9 +16,12 @@ export default function ErrorComponent(ErrorPageProps: ErrorPageProps) {
 	const { code, title, description, suggestions } = ErrorPageProps;
 
 	return (
-		<section id="error-layout">
-			<main className="min-h-dvh flex items-center justify-center px-6 py-16">
-				<section
+		<section
+			id="error-section"
+			className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+		>
+			<main>
+				<div
 					aria-labelledby="error-title"
 					className="w-full max-w-xl text-center"
 				>
@@ -55,7 +58,7 @@ export default function ErrorComponent(ErrorPageProps: ErrorPageProps) {
 						<Button
 							size="lg"
 							variant="outline"
-							className="px-6"
+							className="px-6 py-2"
 							onClick={() => history.go(-1)}
 						>
 							Go Back
@@ -71,7 +74,7 @@ export default function ErrorComponent(ErrorPageProps: ErrorPageProps) {
 							</Button>
 						</Link>
 					</div>
-				</section>
+				</div>
 			</main>
 		</section>
 	);

@@ -8,6 +8,8 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './router/__root'
 import { Route as guestGuestRouteImport } from './router/(guest)/_guest'
 import { Route as guestErrorsRouteImport } from './router/(guest)/_errors'
@@ -28,6 +30,12 @@ import { Route as privateUsersProfileUserIdRouteImport } from './router/(private
 import { Route as dashboardAdminUsersListIndexRouteImport } from './router/(dashboard)/admin/users/list/index'
 import { Route as dashboardAdminUsersFormIndexRouteImport } from './router/(dashboard)/admin/users/_form/index'
 
+const guestRouteImport = createFileRoute('/(guest)')()
+
+const guestRoute = guestRouteImport.update({
+  id: '/(guest)',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const guestGuestRoute = guestGuestRouteImport.update({
   id: '/_guest',
   getParentRoute: () => guestRoute,
@@ -121,6 +129,7 @@ const dashboardAdminUsersFormIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/admin': typeof dashboardAdminRouteWithChildren
+  '/': typeof guestGuestIndexRoute
   '/admin/dashboard': typeof dashboardAdminDashboardRoute
   '/login': typeof guestAuthLoginRoute
   '/register': typeof guestAuthRegisterRoute
@@ -130,7 +139,6 @@ export interface FileRoutesByFullPath {
   '/500': typeof guestErrors500Route
   '/503': typeof guestErrors503Route
   '/product/$productId': typeof privateProductProductIdRoute
-  '/': typeof guestGuestIndexRoute
   '/product': typeof privateProductIndexRoute
   '/users/profile/$userId': typeof privateUsersProfileUserIdRoute
   '/admin/users': typeof dashboardAdminUsersFormIndexRoute
@@ -138,6 +146,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/admin': typeof dashboardAdminRouteWithChildren
+  '/': typeof guestGuestIndexRoute
   '/admin/dashboard': typeof dashboardAdminDashboardRoute
   '/login': typeof guestAuthLoginRoute
   '/register': typeof guestAuthRegisterRoute
@@ -147,7 +156,6 @@ export interface FileRoutesByTo {
   '/500': typeof guestErrors500Route
   '/503': typeof guestErrors503Route
   '/product/$productId': typeof privateProductProductIdRoute
-  '/': typeof guestGuestIndexRoute
   '/product': typeof privateProductIndexRoute
   '/users/profile/$userId': typeof privateUsersProfileUserIdRoute
   '/admin/users': typeof dashboardAdminUsersFormIndexRoute
@@ -156,6 +164,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(dashboard)/admin': typeof dashboardAdminRouteWithChildren
+  '/(guest)': typeof guestRouteWithChildren
   '/(guest)/_auth': typeof guestAuthRouteWithChildren
   '/(guest)/_errors': typeof guestErrorsRouteWithChildren
   '/(guest)/_guest': typeof guestGuestRouteWithChildren
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/admin'
+    | '/'
     | '/admin/dashboard'
     | '/login'
     | '/register'
@@ -187,7 +197,6 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/product/$productId'
-    | '/'
     | '/product'
     | '/users/profile/$userId'
     | '/admin/users'
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
+    | '/'
     | '/admin/dashboard'
     | '/login'
     | '/register'
@@ -204,7 +214,6 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/product/$productId'
-    | '/'
     | '/product'
     | '/users/profile/$userId'
     | '/admin/users'
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/(dashboard)/admin'
+    | '/(guest)'
     | '/(guest)/_auth'
     | '/(guest)/_errors'
     | '/(guest)/_guest'
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   dashboardAdminRoute: typeof dashboardAdminRouteWithChildren
+  guestRoute: typeof guestRouteWithChildren
   privateProductProductIdRoute: typeof privateProductProductIdRoute
   privateProductIndexRoute: typeof privateProductIndexRoute
   privateUsersProfileUserIdRoute: typeof privateUsersProfileUserIdRoute
@@ -240,6 +251,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/(guest)': {
+      id: '/(guest)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof guestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(guest)/_guest': {
       id: '/(guest)/_guest'
       path: ''
@@ -256,8 +274,8 @@ declare module '@tanstack/react-router' {
     }
     '/(guest)/_auth': {
       id: '/(guest)/_auth'
-      path: ''
-      fullPath: ''
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof guestAuthRouteImport
       parentRoute: typeof guestRoute
     }
@@ -385,8 +403,69 @@ const dashboardAdminRouteWithChildren = dashboardAdminRoute._addFileChildren(
   dashboardAdminRouteChildren,
 )
 
+interface guestAuthRouteChildren {
+  guestAuthLoginRoute: typeof guestAuthLoginRoute
+  guestAuthRegisterRoute: typeof guestAuthRegisterRoute
+}
+
+const guestAuthRouteChildren: guestAuthRouteChildren = {
+  guestAuthLoginRoute: guestAuthLoginRoute,
+  guestAuthRegisterRoute: guestAuthRegisterRoute,
+}
+
+const guestAuthRouteWithChildren = guestAuthRoute._addFileChildren(
+  guestAuthRouteChildren,
+)
+
+interface guestErrorsRouteChildren {
+  guestErrors401Route: typeof guestErrors401Route
+  guestErrors403Route: typeof guestErrors403Route
+  guestErrors404Route: typeof guestErrors404Route
+  guestErrors500Route: typeof guestErrors500Route
+  guestErrors503Route: typeof guestErrors503Route
+}
+
+const guestErrorsRouteChildren: guestErrorsRouteChildren = {
+  guestErrors401Route: guestErrors401Route,
+  guestErrors403Route: guestErrors403Route,
+  guestErrors404Route: guestErrors404Route,
+  guestErrors500Route: guestErrors500Route,
+  guestErrors503Route: guestErrors503Route,
+}
+
+const guestErrorsRouteWithChildren = guestErrorsRoute._addFileChildren(
+  guestErrorsRouteChildren,
+)
+
+interface guestGuestRouteChildren {
+  guestGuestIndexRoute: typeof guestGuestIndexRoute
+}
+
+const guestGuestRouteChildren: guestGuestRouteChildren = {
+  guestGuestIndexRoute: guestGuestIndexRoute,
+}
+
+const guestGuestRouteWithChildren = guestGuestRoute._addFileChildren(
+  guestGuestRouteChildren,
+)
+
+interface guestRouteChildren {
+  guestAuthRoute: typeof guestAuthRouteWithChildren
+  guestErrorsRoute: typeof guestErrorsRouteWithChildren
+  guestGuestRoute: typeof guestGuestRouteWithChildren
+}
+
+const guestRouteChildren: guestRouteChildren = {
+  guestAuthRoute: guestAuthRouteWithChildren,
+  guestErrorsRoute: guestErrorsRouteWithChildren,
+  guestGuestRoute: guestGuestRouteWithChildren,
+}
+
+const guestRouteWithChildren = guestRoute._addFileChildren(guestRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   dashboardAdminRoute: dashboardAdminRouteWithChildren,
+  guestRoute: guestRouteWithChildren,
   privateProductProductIdRoute: privateProductProductIdRoute,
   privateProductIndexRoute: privateProductIndexRoute,
   privateUsersProfileUserIdRoute: privateUsersProfileUserIdRoute,

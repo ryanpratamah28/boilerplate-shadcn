@@ -3,24 +3,22 @@ import { getCookie } from "./cookie";
 
 // Create Axios Instance
 const apiInstance = axios.create({
-	baseURL: import.meta.env.VITE_API_URL,
+	baseURL:
+		import.meta.env.VITE_API_URL +
+		"/api/" +
+		import.meta.env.VITE_API_VERSION,
 	headers: {
 		"Content-Type": "application/json",
 	},
 });
 
-console.log("BASE URL", import.meta.env.VITE_API_URL);
-
 // Request Interceptor
 apiInstance.interceptors.request.use(
 	(config) => {
-		const token = localStorage.getItem("token");
 		const accessToken = getCookie("access_token");
 
-		console.log("accessToken", accessToken);
-
-		if (token) {
-			config.headers.Authorization = `Bearer ${token}`;
+		if (accessToken && !config.headers.Authorization) {
+			config.headers.Authorization = `Bearer ${accessToken}`;
 		}
 
 		if (config.data instanceof FormData) {
@@ -33,8 +31,8 @@ apiInstance.interceptors.request.use(
 
 		if (import.meta.env.MODE === "development") {
 			console.log("Axios Request =====================");
-			console.log("Endpoint:", config.url);
-			console.log("Method:", config.method);
+			console.log("🛑 Endpoint:", config.url);
+			console.log("🛑 Method:", config.method);
 
 			if (config.data) {
 				console.log("Data:", config.data);
@@ -53,19 +51,19 @@ apiInstance.interceptors.response.use(
 	(response) => {
 		if (import.meta.env.MODE === "development") {
 			console.log("Axios Response ====================");
-			console.log(`🛑 API Status: ${response.status}`);
-			console.log("🛑 API Data:", response.data);
+			console.log(`🛒 API Status: ${response.status}`);
+			console.log("🛒 API Data:", response.data);
 		}
 
 		return response;
 	},
-	(error) => {
+	async (error) => {
 		if (import.meta.env.MODE === "development") {
 			console.error("Axios Error Response ==============");
-			console.error(`🛑 Endpoint: ${error.config?.url}`);
-			console.error(`🛑 Status: ${error.response?.status}`);
-			console.error(`🛑 Message: ${error.message}`);
-			console.error("🛑 Response Data:", error.response?.data);
+			console.error(`🛒 Endpoint: ${error.config?.url}`);
+			console.error(`🛒 Status: ${error.response?.status}`);
+			console.error(`🛒 Message: ${error.message}`);
+			console.error("🛒 Response Data:", error.response?.data);
 		}
 
 		return Promise.reject(error);

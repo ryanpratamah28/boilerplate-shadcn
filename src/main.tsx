@@ -10,6 +10,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import AuthProvider from "./components/AuthProvider";
 
 import "./styles/index.css";
+import "./styles/swiper.css";
 
 // Render the app
 const rootElement = document.getElementById("root")!;
