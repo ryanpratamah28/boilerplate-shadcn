@@ -3,10 +3,7 @@ import { getCookie } from "./cookie";
 
 // Create Axios Instance
 const apiInstance = axios.create({
-	baseURL:
-		import.meta.env.VITE_API_URL +
-		"/api/" +
-		import.meta.env.VITE_API_VERSION,
+	baseURL: import.meta.env.VITE_API_URL,
 	headers: {
 		"Content-Type": "application/json",
 	},
@@ -43,7 +40,7 @@ apiInstance.interceptors.request.use(
 	},
 	(error) => {
 		return Promise.reject(error);
-	}
+	},
 );
 
 // Response Interceptor
@@ -67,7 +64,7 @@ apiInstance.interceptors.response.use(
 		}
 
 		return Promise.reject(error);
-	}
+	},
 );
 
 export default apiInstance;
