@@ -8,56 +8,56 @@ This project is built using a robust set of libraries and tools:
 
 ### Core & Framework
 
--   **React 19:** The latest version of the library for web and native user interfaces.
--   **TypeScript:** Strictly typed JavaScript for better code quality.
--   **Vite:** Next-generation frontend tooling.
--   **@tailwindcss/vite:** High-performance tooling for Tailwind CSS v4.
+- **React 19:** The latest version of the library for web and native user interfaces.
+- **TypeScript:** Strictly typed JavaScript for better code quality.
+- **Vite:** Next-generation frontend tooling.
+- **@tailwindcss/vite:** High-performance tooling for Tailwind CSS v4.
 
 ### UI Components & Styling
 
--   **Tailwind CSS 4:** Utility-first CSS framework for rapid UI development.
--   **ShadCN UI (Radix Primitives):**
-    -   Built on top of **@radix-ui** (Dialog, Dropdown, Accordion, etc.) for accessible, unstyled components.
-    -   Uses **class-variance-authority (CVA)**, **clsx**, and **tailwind-merge** for dynamic styling.
--   **Icons:**
-    -   **Lucide React:** Beautiful & consistent icons.
-    -   **Tabler Icons:** Additional icon set for broader visual options.
--   **Typography:** **@fontsource/rethink-sans** for the primary font family.
--   **Interactive Components:**
-    -   **Sonner:** For clean and responsive toast notifications.
-    -   **Swiper:** Modern touch slider for carousels.
-    -   **Vaul:** Drawer component for mobile-friendly interactions.
-    -   **CMDK:** Fast, composable command menu.
-    -   **Recharts:** Composable charting library for data visualization.
-    -   **React Day Picker / Datepicker:** Flexible date picking components.
+- **Tailwind CSS 4:** Utility-first CSS framework for rapid UI development.
+- **ShadCN UI (Radix Primitives):**
+    - Built on top of **@radix-ui** (Dialog, Dropdown, Accordion, etc.) for accessible, unstyled components.
+    - Uses **class-variance-authority (CVA)**, **clsx**, and **tailwind-merge** for dynamic styling.
+- **Icons:**
+    - **Lucide React:** Beautiful & consistent icons.
+    - **Tabler Icons:** Additional icon set for broader visual options.
+- **Typography:** **@fontsource/rethink-sans** for the primary font family.
+- **Interactive Components:**
+    - **Sonner:** For clean and responsive toast notifications.
+    - **Swiper:** Modern touch slider for carousels.
+    - **Vaul:** Drawer component for mobile-friendly interactions.
+    - **CMDK:** Fast, composable command menu.
+    - **Recharts:** Composable charting library for data visualization.
+    - **React Day Picker / Datepicker:** Flexible date picking components.
 
 ### State Management & Data Fetching
 
--   **@tanstack/react-query:** Powerful asynchronous state management for server data caching and synchronization.
--   **Zustand:** A small, fast, and scalable bearbones state-management solution for global client state.
--   **Axios:** Promise-based HTTP client for making API requests.
+- **@tanstack/react-query:** Powerful asynchronous state management for server data caching and synchronization.
+- **Zustand:** A small, fast, and scalable bearbones state-management solution for global client state.
+- **Axios:** Promise-based HTTP client for making API requests.
 
 ### Routing
 
--   **@tanstack/react-router:** Type-safe routing for React applications, including DevTools and CLI integration.
+- **@tanstack/react-router:** Type-safe routing for React applications, including DevTools and CLI integration.
 
 ### Forms & Validation
 
--   **React Hook Form:** Performant, flexible, and extensible forms with easy-to-use validation.
--   **Zod:** TypeScript-first schema declaration and validation library.
--   **@hookform/resolvers:** Bridges Zod schemas with React Hook Form validation.
+- **React Hook Form:** Performant, flexible, and extensible forms with easy-to-use validation.
+- **Zod:** TypeScript-first schema declaration and validation library.
+- **@hookform/resolvers:** Bridges Zod schemas with React Hook Form validation.
 
 ### Real-Time & Integrations
 
--   **Laravel Echo & Pusher JS:** WebSocket integration used for **Real-time Live Chat** and event broadcasting.
--   **Firebase:** Integrated for cloud services (e.g., Push Notifications/FCM).
+- **Laravel Echo & Pusher JS:** WebSocket integration used for **Real-time Live Chat** and event broadcasting.
+- **Firebase:** Integrated for cloud services (e.g., Push Notifications/FCM).
 
 ### Utilities
 
--   **date-fns:** Modern JavaScript date utility library.
--   **js-cookie:** Simple, lightweight JavaScript API for handling cookies.
--   **react-number-format:** Component to format numbers (currency, etc.) in input fields.
--   **next-themes:** abstraction for handling dark/light mode themes.
+- **date-fns:** Modern JavaScript date utility library.
+- **js-cookie:** Simple, lightweight JavaScript API for handling cookies.
+- **react-number-format:** Component to format numbers (currency, etc.) in input fields.
+- **next-themes:** abstraction for handling dark/light mode themes.
 
 ## Getting Started
 
@@ -169,8 +169,8 @@ This template provides a minimal setup to get React working in Vite with HMR and
 
 Currently, two official plugins are available:
 
--   [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
--   [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 ## React Compiler
 
