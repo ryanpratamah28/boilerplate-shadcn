@@ -44,7 +44,7 @@ const Products = (props: Props) => {
 				products?.filter((product) => product.id !== id);
 			}
 		},
-		[products, hasPermission, navigate]
+		[products, hasPermission, navigate],
 	);
 
 	return (
@@ -57,7 +57,7 @@ const Products = (props: Props) => {
 						<span className="flex gap-2">
 							<Link
 								to={"/product/$productId"}
-								params={{ productId: product.id }}
+								params={{ productId: String(product.id) }}
 							>
 								<Button variant="default" size={"sm"}>
 									Edit

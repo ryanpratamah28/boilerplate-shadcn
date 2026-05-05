@@ -36,6 +36,3 @@ dist-ssr
 
 # Config Vite
 .vite.config.ts
-
-# Agents
-.agents

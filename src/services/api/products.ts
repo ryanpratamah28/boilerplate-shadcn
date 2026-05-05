@@ -6,7 +6,7 @@ import apiInstance from "@/lib/axios";
 import type { Product } from "@/types/pages/product";
 
 // Find All
-export const findAll = async (): Promise<Product | null> => {
+export const findAll = async (): Promise<Product[] | null> => {
 	try {
 		const response = await apiInstance.get<Product[]>("/products");
 
