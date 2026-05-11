@@ -1,6 +1,16 @@
-# Boilerplate
+# React + ShadCN UI Boilerplate
 
-Boilerplate modern, cepat, dan _type-safe_ untuk memulai pengembangan aplikasi web. Proyek ini dikonfigurasi menggunakan **React 19**, **TypeScript**, **Vite**, dan **Tailwind CSS v4** terbaru.
+Modern, fast, and type-safe boilerplate for starting web applications. This project is configured with React 19, TypeScript, Vite, TanStack Router, and Tailwind CSS v4, built around ShadCN UI conventions and an AI-driven pattern generation workflow.
+
+## Key Features
+
+- **Component-Driven UI:** Built with ShadCN UI and Radix Primitives for accessible, customizable components.
+- **Strict Typing:** End-to-end type safety using TypeScript and Zod schemas.
+- **Robust Routing:** File-based routing with `@tanstack/react-router`.
+- **Form Management:** `react-hook-form` coupled with `zod` for performant, validated forms.
+- **AI-Powered Workflows:** Built-in AI generation patterns via the `.agents` folder for rapid and consistent feature scaffolding.
+
+---
 
 ## Tech Stack
 
@@ -59,180 +69,174 @@ This project is built using a robust set of libraries and tools:
 - **react-number-format:** Component to format numbers (currency, etc.) in input fields.
 - **next-themes:** abstraction for handling dark/light mode themes.
 
+---
+
+## Prerequisites
+
+- Node.js 20 or higher
+- [pnpm](https://pnpm.io/installation) (recommended package manager)
+
+---
+
 ## Getting Started
 
-Follow the steps below to set up the project locally and build for production.
-
-### 1. Prerequisites
-
-Ensure you have **[pnpm](https://pnpm.io/installation)** installed on your system.
-
-### 2. Installation
-
-Clone the repository and install all necessary dependencies.
+### 1. Clone the Repository
 
 ```bash
-# Replace <your-repository-url> with your repo URL
 git clone <your-repository-url>
 cd <your-project-folder>
+```
 
-# Install dependencies
+### 2. Install Dependencies
+
+```bash
 pnpm install
 ```
 
 ### 3. Environment Variables
 
-Create a `.env` file in the root directory based on `.env.example`. You will need to configure your Backend URL and WebSocket credentials here:
+Copy the example environment file:
 
-```env
-VITE_API_URL=[http://your-laravel-backend.test/api](http://your-laravel-backend.test/api)
-VITE_REVERB_APP_KEY=your_app_key
-VITE_REVERB_HOST=your_host
-VITE_REVERB_PORT=8080
-VITE_REVERB_SCHEME=http
-
+```bash
+cp .env.example .env
 ```
 
-### 4. Development Server
+Configure the following variables in your `.env`:
 
-To start the application in development mode with Hot Module Replacement (HMR):
+| Variable              | Description                         | Example                       |
+| --------------------- | ----------------------------------- | ----------------------------- |
+| `VITE_API_URL`        | Your backend API URL                | `http://your-backend-app/api` |
+| `VITE_REVERB_APP_KEY` | Reverb/Pusher app key for WebSocket | `your_app_key`                |
+| `VITE_REVERB_HOST`    | Reverb/Pusher host                  | `your_host`                   |
+| `VITE_REVERB_PORT`    | Reverb/Pusher port                  | `8080`                        |
+| `VITE_REVERB_SCHEME`  | WebSocket connection scheme         | `http` or `https`             |
+
+### 4. Start Development Server
 
 ```bash
 pnpm run dev
-
 ```
 
-Your application will now be available at `http://localhost:5173`.
+Your application will now be available at [http://localhost:5173](http://localhost:5173). The TanStack Router devtools will be available automatically in development.
 
-### 5. Prepare for Production (Important)
+---
 
-Before building for production, **you must comment out or remove the `server.proxy` configuration** in `vite.config.ts`. The proxy is only intended for the local development environment to handle CORS and is not used in the production build.
+## Architecture Overview
 
-Open `vite.config.ts` and comment out the `server` block:
+### Directory Structure
 
-```typescript
-// vite.config.ts
-
-export default defineConfig(({ mode }) => {
-    // ...
-    return {
-        plugins: [ ... ],
-        resolve: { ... },
-
-        // Comment this section out for production
-        /*
-        server: {
-            proxy: {
-                "/api": {
-                    target: env.VITE_API_URL,
-                    changeOrigin: true,
-                    secure: false,
-                },
-                "/ws": {
-                    target: "wss://[api.com/ws](https://api.com/ws)",
-                    changeOrigin: true,
-                    secure: false,
-                    ws: true,
-                    rewrite: (path) => path.replace(/^\/ws/, ""),
-                },
-            },
-        },
-        */
-    };
-});
-
+```text
+src/
+├── assets/                 # Static assets like images and global CSS
+├── components/             # Shared components
+│   ├── features/           # Domain-specific reusable components
+│   ├── layouts/            # Page layouts (e.g., AuthLayout, DashboardLayout)
+│   └── ui/                 # ShadCN UI primitives
+├── features/               # Page-level feature modules
+│   └── {module}/           # Example: users, products
+│       ├── form/           # Form components (e.g., user-form.tsx)
+│       │   └── sections/   # Form sub-sections
+│       └── list/           # Table and list view components
+├── hooks/                  # Reusable custom React hooks
+├── lib/                    # Utilities and configurations
+│   ├── enum/               # API endpoint enums
+│   └── helpers/            # Helper functions
+├── router/                 # TanStack Router file-based routes
+│   ├── (dashboard)/        # Admin/Dashboard routes
+│   ├── (guest)/            # Public routes (e.g., login, register)
+│   └── (private)/          # Authenticated user routes
+├── schemas/                # Zod validation schemas
+├── services/               # API service functions
+│   └── api/                # Axios-based API calls
+├── store/                  # Zustand global state stores
+├── styles/                 # Global stylesheets
+└── types/                  # TypeScript interfaces and types
+    ├── api/                # API response types
+    └── pages/              # Module-specific prop and form types
 ```
 
-### 6. Building for Production
+### Request & Data Flow
 
-Once the configuration is ready, build the application:
+1. **Routing:** Request hits TanStack Router (`src/router`).
+2. **Data Fetching:** Route `loader` functions or TanStack Query fetches data via `src/services`.
+3. **State:** Global client state is accessed via Zustand (`src/store`).
+4. **Rendering:** React components in `src/features` render the UI.
+5. **Forms:** Data mutations use `react-hook-form` + `zod` schemas (`src/schemas`).
+
+---
+
+## The Pattern Folder (`.agents/`)
+
+This project embraces an **AI-driven development approach**. To maintain architectural consistency, we use the `.agents` folder, which contains standardized workflows and rules for generating new code.
+
+### Using Workflow Patterns (`.agents/workflows/`)
+
+The workflows directory contains Markdown files designed as "slash commands" for AI coding assistants. These workflows ensure that any AI-generated code strictly follows the boilerplate's conventions.
+
+**Available Patterns:**
+
+- `/create-schemas`: Generate Zod validation schemas based on API definitions.
+- `/create-types`: Generate TypeScript type definitions.
+- `/create-services`: Generate the API service layer with CRUD operations.
+- `/create-form`: Generate a create/edit form feature wrapper and detail sections.
+- `/create-table-list`: Generate a full data table list with headers and actions.
+- `/create-routes-admin`: Scaffolds TanStack Router files for admin views.
+- `/create-routes-public`: Scaffolds public/private user-facing routes.
+- `/create-routes-seller-center`: Scaffolds routes for the Seller Centre.
+- `/create-stores`: Scaffolds Zustand client-side caching stores.
+- `/create-enum-endpoints`: Creates enum files for API endpoints.
+
+**How to Use:**
+When prompting your AI agent, explicitly mention a workflow to trigger code generation.
+_Example:_ `"Use /create-form to build the User form. The schema has name, email, and role."\*
+
+### Enforced Rules (`.agents/rules/`)
+
+This directory contains `pattern-rules.md`, defining the unbreakable constraints of this workspace:
+
+- **Language**: All user-facing text must be in **Bahasa Indonesia (KBBI)**.
+- **Styling**: Strict use of Tailwind CSS v4 and ShadCN UI. No inline styles.
+- **Components**: Single responsibility, split large components into sub-components.
+- **File Organization**: Follow the **Feature-Based Architecture** with separate files for forms, tables, types, schemas, services, hooks, and routes within each feature.
+- **Configuration**: All environment variables and API configurations are centralized in `src/lib/config.ts`.
+- **API Services**: All API services must be implemented using Axios and centralized in `src/services/api/api.ts`.
+- **Real-Time**: All WebSocket implementations must use Laravel Echo and Pusher JS, with configurations in `src/lib/config.ts` and integration with Zustand stores or context.
+
+---
+
+## Available Scripts
+
+| Command            | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `pnpm run dev`     | Start development server with Vite & TanStack Router watcher |
+| `pnpm run build`   | Build for production (`tsc -b && vite build`)                |
+| `pnpm run preview` | Preview production build locally                             |
+| `pnpm run lint`    | Run ESLint to analyze code quality                           |
+
+---
+
+## Testing & Quality Assurance
+
+This boilerplate relies on TypeScript strict mode and ESLint for code quality.
 
 ```bash
-pnpm run build
-
+# Run TypeScript compilation check and ESLint
+pnpm run lint
 ```
 
-This command generates the static files in the `dist` directory.
+When building forms or making changes, ensure your `zod` schemas cover all validation edges before submitting forms.
 
-### 7. Preview Production Build
+---
 
-After building, you can preview the production build locally to ensure everything works as expected:
+## Deployment
 
-```bash
-pnpm run preview
+The application is built as a static site (SPA) that can be deployed to any static host (Vercel, Netlify, Cloudflare Pages, S3, etc.).
 
-```
+1. Create a production build:
+    ```bash
+    pnpm run build
+    ```
+2. The generated output will be in the `dist/` directory.
+3. Configure your hosting provider to route all unresolved paths to `index.html` (Client-Side Routing fallback).
 
-## React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-	globalIgnores(["dist"]),
-	{
-		files: ["**/*.{ts,tsx}"],
-		extends: [
-			// Other configs...
-
-			// Remove tseslint.configs.recommended and replace with this
-			tseslint.configs.recommendedTypeChecked,
-			// Alternatively, use this for stricter rules
-			tseslint.configs.strictTypeChecked,
-			// Optionally, add this for stylistic rules
-			tseslint.configs.stylisticTypeChecked,
-
-			// Other configs...
-		],
-		languageOptions: {
-			parserOptions: {
-				project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-				tsconfigRootDir: import.meta.dirname,
-			},
-			// other options...
-		},
-	},
-]);
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default defineConfig([
-	globalIgnores(["dist"]),
-	{
-		files: ["**/*.{ts,tsx}"],
-		extends: [
-			// Other configs...
-			// Enable lint rules for React
-			reactX.configs["recommended-typescript"],
-			// Enable lint rules for React DOM
-			reactDom.configs.recommended,
-		],
-		languageOptions: {
-			parserOptions: {
-				project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-				tsconfigRootDir: import.meta.dirname,
-			},
-			// other options...
-		},
-	},
-]);
-```
+_Note: If you have a proxy configured in `vite.config.ts` for local development CORS, ensure it does not interfere with your production build process._
