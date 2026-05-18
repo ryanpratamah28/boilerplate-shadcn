@@ -8,8 +8,6 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './router/__root'
 import { Route as guestGuestRouteImport } from './router/(guest)/_guest'
 import { Route as guestErrorsRouteImport } from './router/(guest)/_errors'
@@ -30,23 +28,17 @@ import { Route as privateUsersProfileUserIdRouteImport } from './router/(private
 import { Route as dashboardAdminUsersListIndexRouteImport } from './router/(dashboard)/admin/users/list/index'
 import { Route as dashboardAdminUsersFormIndexRouteImport } from './router/(dashboard)/admin/users/_form/index'
 
-const guestRouteImport = createFileRoute('/(guest)')()
-
-const guestRoute = guestRouteImport.update({
-  id: '/(guest)',
+const guestGuestRoute = guestGuestRouteImport.update({
+  id: '/(guest)/_guest',
   getParentRoute: () => rootRouteImport,
 } as any)
-const guestGuestRoute = guestGuestRouteImport.update({
-  id: '/_guest',
-  getParentRoute: () => guestRoute,
-} as any)
 const guestErrorsRoute = guestErrorsRouteImport.update({
-  id: '/_errors',
-  getParentRoute: () => guestRoute,
+  id: '/(guest)/_errors',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const guestAuthRoute = guestAuthRouteImport.update({
-  id: '/_auth',
-  getParentRoute: () => guestRoute,
+  id: '/(guest)/_auth',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const dashboardAdminRoute = dashboardAdminRouteImport.update({
   id: '/(dashboard)/admin',
@@ -129,7 +121,6 @@ const dashboardAdminUsersFormIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/admin': typeof dashboardAdminRouteWithChildren
-  '/': typeof guestGuestIndexRoute
   '/admin/dashboard': typeof dashboardAdminDashboardRoute
   '/login': typeof guestAuthLoginRoute
   '/register': typeof guestAuthRegisterRoute
@@ -139,14 +130,14 @@ export interface FileRoutesByFullPath {
   '/500': typeof guestErrors500Route
   '/503': typeof guestErrors503Route
   '/product/$productId': typeof privateProductProductIdRoute
-  '/product': typeof privateProductIndexRoute
+  '/': typeof guestGuestIndexRoute
+  '/product/': typeof privateProductIndexRoute
   '/users/profile/$userId': typeof privateUsersProfileUserIdRoute
-  '/admin/users': typeof dashboardAdminUsersFormIndexRoute
-  '/admin/users/list': typeof dashboardAdminUsersListIndexRoute
+  '/admin/users/': typeof dashboardAdminUsersFormIndexRoute
+  '/admin/users/list/': typeof dashboardAdminUsersListIndexRoute
 }
 export interface FileRoutesByTo {
   '/admin': typeof dashboardAdminRouteWithChildren
-  '/': typeof guestGuestIndexRoute
   '/admin/dashboard': typeof dashboardAdminDashboardRoute
   '/login': typeof guestAuthLoginRoute
   '/register': typeof guestAuthRegisterRoute
@@ -156,6 +147,7 @@ export interface FileRoutesByTo {
   '/500': typeof guestErrors500Route
   '/503': typeof guestErrors503Route
   '/product/$productId': typeof privateProductProductIdRoute
+  '/': typeof guestGuestIndexRoute
   '/product': typeof privateProductIndexRoute
   '/users/profile/$userId': typeof privateUsersProfileUserIdRoute
   '/admin/users': typeof dashboardAdminUsersFormIndexRoute
@@ -164,7 +156,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(dashboard)/admin': typeof dashboardAdminRouteWithChildren
-  '/(guest)': typeof guestRouteWithChildren
   '/(guest)/_auth': typeof guestAuthRouteWithChildren
   '/(guest)/_errors': typeof guestErrorsRouteWithChildren
   '/(guest)/_guest': typeof guestGuestRouteWithChildren
@@ -187,7 +178,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/admin'
-    | '/'
     | '/admin/dashboard'
     | '/login'
     | '/register'
@@ -197,14 +187,14 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/product/$productId'
-    | '/product'
+    | '/'
+    | '/product/'
     | '/users/profile/$userId'
-    | '/admin/users'
-    | '/admin/users/list'
+    | '/admin/users/'
+    | '/admin/users/list/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
-    | '/'
     | '/admin/dashboard'
     | '/login'
     | '/register'
@@ -214,6 +204,7 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/product/$productId'
+    | '/'
     | '/product'
     | '/users/profile/$userId'
     | '/admin/users'
@@ -221,7 +212,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/(dashboard)/admin'
-    | '/(guest)'
     | '/(guest)/_auth'
     | '/(guest)/_errors'
     | '/(guest)/_guest'
@@ -243,7 +233,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   dashboardAdminRoute: typeof dashboardAdminRouteWithChildren
-  guestRoute: typeof guestRouteWithChildren
+  guestAuthRoute: typeof guestAuthRouteWithChildren
+  guestErrorsRoute: typeof guestErrorsRouteWithChildren
+  guestGuestRoute: typeof guestGuestRouteWithChildren
   privateProductProductIdRoute: typeof privateProductProductIdRoute
   privateProductIndexRoute: typeof privateProductIndexRoute
   privateUsersProfileUserIdRoute: typeof privateUsersProfileUserIdRoute
@@ -251,33 +243,26 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(guest)': {
-      id: '/(guest)'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof guestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(guest)/_guest': {
       id: '/(guest)/_guest'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof guestGuestRouteImport
-      parentRoute: typeof guestRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(guest)/_errors': {
       id: '/(guest)/_errors'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof guestErrorsRouteImport
-      parentRoute: typeof guestRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(guest)/_auth': {
       id: '/(guest)/_auth'
-      path: '/'
-      fullPath: '/'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof guestAuthRouteImport
-      parentRoute: typeof guestRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(dashboard)/admin': {
       id: '/(dashboard)/admin'
@@ -289,7 +274,7 @@ declare module '@tanstack/react-router' {
     '/(private)/product/': {
       id: '/(private)/product/'
       path: '/product'
-      fullPath: '/product'
+      fullPath: '/product/'
       preLoaderRoute: typeof privateProductIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -373,14 +358,14 @@ declare module '@tanstack/react-router' {
     '/(dashboard)/admin/users/list/': {
       id: '/(dashboard)/admin/users/list/'
       path: '/users/list'
-      fullPath: '/admin/users/list'
+      fullPath: '/admin/users/list/'
       preLoaderRoute: typeof dashboardAdminUsersListIndexRouteImport
       parentRoute: typeof dashboardAdminRoute
     }
     '/(dashboard)/admin/users/_form/': {
       id: '/(dashboard)/admin/users/_form/'
       path: '/users'
-      fullPath: '/admin/users'
+      fullPath: '/admin/users/'
       preLoaderRoute: typeof dashboardAdminUsersFormIndexRouteImport
       parentRoute: typeof dashboardAdminRoute
     }
@@ -449,23 +434,11 @@ const guestGuestRouteWithChildren = guestGuestRoute._addFileChildren(
   guestGuestRouteChildren,
 )
 
-interface guestRouteChildren {
-  guestAuthRoute: typeof guestAuthRouteWithChildren
-  guestErrorsRoute: typeof guestErrorsRouteWithChildren
-  guestGuestRoute: typeof guestGuestRouteWithChildren
-}
-
-const guestRouteChildren: guestRouteChildren = {
+const rootRouteChildren: RootRouteChildren = {
+  dashboardAdminRoute: dashboardAdminRouteWithChildren,
   guestAuthRoute: guestAuthRouteWithChildren,
   guestErrorsRoute: guestErrorsRouteWithChildren,
   guestGuestRoute: guestGuestRouteWithChildren,
-}
-
-const guestRouteWithChildren = guestRoute._addFileChildren(guestRouteChildren)
-
-const rootRouteChildren: RootRouteChildren = {
-  dashboardAdminRoute: dashboardAdminRouteWithChildren,
-  guestRoute: guestRouteWithChildren,
   privateProductProductIdRoute: privateProductProductIdRoute,
   privateProductIndexRoute: privateProductIndexRoute,
   privateUsersProfileUserIdRoute: privateUsersProfileUserIdRoute,
