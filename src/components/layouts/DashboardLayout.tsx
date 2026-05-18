@@ -1,6 +1,9 @@
 // React
 import React from "react";
 
+// Routing
+import { Link, useLocation } from "@tanstack/react-router";
+
 // ShadCN UI Components
 import {
 	Breadcrumb,
@@ -25,6 +28,9 @@ export default function DashboardLayout({
 }: {
 	children?: React.ReactNode;
 }) {
+	const location = useLocation();
+	const pathnames = location.pathname.split("/").filter((x) => x);
+
 	return (
 		<SidebarProvider>
 			<Sidebar />
@@ -41,21 +47,51 @@ export default function DashboardLayout({
 					<Breadcrumb>
 						<BreadcrumbList>
 							<BreadcrumbItem className="hidden md:block">
-								<BreadcrumbLink href="#">
-									components
-								</BreadcrumbLink>
+								{pathnames.length === 0 ||
+								(pathnames.length === 1 &&
+									pathnames[0] === "admin") ? (
+									<BreadcrumbPage>Admin</BreadcrumbPage>
+								) : (
+									<BreadcrumbLink asChild>
+										<Link to="/admin">Admin</Link>
+									</BreadcrumbLink>
+								)}
 							</BreadcrumbItem>
-							<BreadcrumbSeparator className="hidden md:block" />
 
-							<BreadcrumbItem className="hidden md:block">
-								<BreadcrumbLink href="#">ui</BreadcrumbLink>
-							</BreadcrumbItem>
+							{pathnames.map((segment, index) => {
+								if (segment === "admin" && index === 0)
+									return null;
 
-							<BreadcrumbSeparator className="hidden md:block" />
+								const isLast = index === pathnames.length - 1;
+								const to = `/${pathnames.slice(0, index + 1).join("/")}`;
+								const title = segment.replace(/-/g, " ");
 
-							<BreadcrumbItem>
-								<BreadcrumbPage>button.tsx</BreadcrumbPage>
-							</BreadcrumbItem>
+								return (
+									<React.Fragment key={to}>
+										<BreadcrumbSeparator className="hidden md:block" />
+										<BreadcrumbItem
+											className={
+												isLast ? "" : "hidden md:block"
+											}
+										>
+											{isLast ? (
+												<BreadcrumbPage className="capitalize">
+													{title}
+												</BreadcrumbPage>
+											) : (
+												<BreadcrumbLink asChild>
+													<Link
+														to={to as any}
+														className="capitalize"
+													>
+														{title}
+													</Link>
+												</BreadcrumbLink>
+											)}
+										</BreadcrumbItem>
+									</React.Fragment>
+								);
+							})}
 						</BreadcrumbList>
 					</Breadcrumb>
 				</header>
