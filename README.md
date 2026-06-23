@@ -123,6 +123,8 @@ Your application will now be available at [http://localhost:5173](http://localho
 
 ## Architecture Overview
 
+This project uses a **hybrid Feature-Based Architecture** with central shared utility/infrastructure layers.
+
 ### Directory Structure
 
 ```text
@@ -154,6 +156,52 @@ src/
     ├── api/                # API response types
     └── pages/              # Module-specific prop and form types
 ```
+
+### Architectural Classification
+
+This boilerplate utilizes a **hybrid architecture** that balances domain-driven separation of concerns with structured global technical layers:
+
+#### 1. Feature-Based Architecture (UI/View Layer)
+All code relating to specific business domains is isolated under `src/features/{module}/` (e.g., `auth`, `products`, `users`). 
+* **Folder Modularity**: Each feature directory contains its own `form/` subfolder (for data submission and editing) and `list/` subfolder (for tables, pagination, and lists).
+* **High Cohesion**: Modifying how products behave or are presented only requires working within the `src/features/products/` feature folder.
+* **Feature Boundaries & Decoupling**: 
+  - Direct imports between different feature modules (e.g., importing a component from `src/features/users/` into `src/features/products/`) are **strictly prohibited** to prevent circular dependencies and spaghetti code.
+  - Shared domain elements must be promoted to the global `src/components/features/` directory.
+
+#### 2. Layered Infrastructure (Cross-Cutting Technical Concerns)
+Cross-cutting architectural layers are centralized outside of feature folders to standardize application logic and optimize performance:
+* **Routing (`src/router/`)**: Type-safe routes defined using TanStack Router. Page routing routes act as thin entry orchestrators, loading data via API services and rendering feature components.
+* **Services (`src/services/`)**: Centralized HTTP/Axios connectors. Grouping API clients together ensures that interceptors (such as auth token injection and error handling logs) are consistently applied across all endpoints.
+* **Global Client State (`src/store/`)**: Global states managed via Zustand. This is reserved for environment properties, layouts, and session/auth token storage.
+* **Validations (`src/schemas/`)**: Application Zod schemas are kept centralized, making it easy to share schema definitions between frontend forms and backend validation checks.
+* **Component Primitives (`src/components/ui/`)**: Reusable, stateless atom components styled with Tailwind v4 (via ShadCN UI primitives).
+
+#### 🔄 Dependency Flow Rules
+
+The diagram below outlines the permitted flow of imports and dependencies:
+
+```
+[src/router] -> Orchestrates -> [src/features/{module}]
+                                       |
+                                       v (Permitted Imports)
+                 +---------------------+---------------------+
+                 |                     |                     |
+                 v                     v                     v
+          [src/services]         [src/store]           [src/schemas]
+                 |                     |                     |
+                 +---------------------+---------------------+
+                                       |
+                                       v
+                             [src/components/ui]
+```
+
+* **Valid Imports**:
+  - Router files import components from `src/features/` and service functions from `src/services/`.
+  - Feature components import from `src/components/ui/`, `src/services/`, `src/store/`, `src/schemas/`, and `src/types/`.
+* **Invalid Imports**:
+  - UI Primitives (`src/components/ui/`) must never import from features, stores, services, or schemas (they must remain completely stateless and generic).
+  - Feature modules must never import from other feature modules directly.
 
 ### Request & Data Flow
 
